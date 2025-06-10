@@ -45,31 +45,30 @@ document.addEventListener("click", e => {
     let lengthOfMonth = getDaysInMonth(currentDate)
     let prevMonthLength = getDaysInMonth((currentDate) - 1) 
 
-    console.log(lengthOfMonth)
-    calculatePopulatingCalendar(firstDayWeekday)
+    // console.log(lengthOfMonth)
+    placingFirstOfMonth(firstDayWeekday)
     finishPrevMonth(currentDate, firstDayWeekday)
 })
 
 function finishPrevMonth(currentDate, firstDayWeekday) {
-    if (firstDayWeekday != 1) {
-        let prevMonthLength = getDaysInMonth((currentDate) - 1)
+    if (firstDayWeekday === 1) return
+        let prevMonthLength = getDaysInMonth(getMonth(currentDate) -1) 
+        let otherPrevMonthLength = getDaysInMonth(currentDate)
 
+console.log(prevMonthLength, otherPrevMonthLength)
         for (let i = firstDayWeekday; i >= 1; i--) {
             let prevMonthDay = prevMonthLength;
             let incrementBackwards = 1
             let colNumber = firstDayWeekday - incrementBackwards
 
             let currentDayPos = document.querySelector('.row-1' && `.col-${colNumber}`) 
-            console.log(currentDayPos)
+            // console.log(currentDayPos)
             currentDayPos.style = "color: gray"
             currentDayPos.innerText = prevMonthDay
 
             prevMonthDay =  prevMonthDay - 1;
             incrementBackwards++
-
-            console.log(prevMonthDay)
         }
-    }
 } 
 
 function changeDate(date, daysToAdd, monthsToAdd, yearsToAdd) {
@@ -87,7 +86,7 @@ function changeDate(date, daysToAdd, monthsToAdd, yearsToAdd) {
     return returnedDate
 }
 
-function calculatePopulatingCalendar(dayToCompare) {
+function placingFirstOfMonth(dayToCompare) {
     switch (dayToCompare) {
         case "1":
             document.querySelector('.row-1' && '.col-1').innerText = "1"
