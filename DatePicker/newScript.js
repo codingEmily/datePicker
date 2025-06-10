@@ -9,6 +9,10 @@ const toggleButton = document.querySelector('.date-picker-button')
 const monthAndYearHeader = document.querySelector('.current-month')
 const prevButton = document.querySelector('.prev-month-button')
 const nextButton = document.querySelector('.next-month-button')
+const calendarGrid = document.querySelector('.date-picker-grid-dates')
+// console.log(calendarGrid)
+// 
+//  <div class="date-picker-grid-dates date-picker-grid">
 
 let dateIdNumber = 1; ///////////////////////////////// 
 // let tempDate = document.querySelector(`#pos-${dateIdNumber}`)
@@ -30,14 +34,6 @@ toggleButton.innerText = format(currentDaySelected, "MMMM do, yyyy")
 monthAndYearHeader.innerText = format(currentDaySelected, "MMMM yyyy")
 populateWholeCalendar()
 
-// document.addEventListener("click", e => {
-//     if (e.target.matches('.prev-month-button')) {
-//     changeMonth(-1)
-//     } else if (e.target.matches('.next-month-button')) {
-//     changeMonth(1)
-//     }
-// })
-
 prevButton.addEventListener("click", () => {
     changeMonth(-1)
 })
@@ -52,27 +48,29 @@ function changeMonth(value) {
     populateWholeCalendar()
 }
 
-function resetCalendar() {
-    emptyCalendarHTML()
-    dateIdNumber = 1
-
-    firstDayWeekday = format(new Date(getYear(currentDaySelected), getMonth(currentDaySelected), 1), "e")
-}
-
-
 function populateWholeCalendar() {
-    resetCalendar()
+    firstDayWeekday = resetCalendar()
 
     fillPrevMonthSection()
     fillCurrentMonthSection(currentDaySelected)
     fillNextMonthSection()
 }
 
+function resetCalendar() {
+    emptyCalendarHTML()
+    dateIdNumber = 1
+
+    return firstDayWeekday = format(new Date(getYear(currentDaySelected), getMonth(currentDaySelected), 1), "e")
+}
+
 function fillPrevMonthSection() {
+    prevMonthLength = getDaysInMonth(addMonths(currentDaySelected, -1)) 
+    // console.log(prevMonthLength)
+
     if (firstDayWeekday == "1") {
         return
     } else if (firstDayWeekday != "1") {
-        let numOfPrevToShow = firstDayWeekday - 1
+        let numOfPrevToShow = (Number(firstDayWeekday)) - 1
         let currDayOfPrevMonth = prevMonthLength - numOfPrevToShow
         
         for (let i = 1; i <= numOfPrevToShow; i++) {
@@ -86,16 +84,52 @@ function fillPrevMonthSection() {
 
 function fillCurrentMonthSection(currentDaySelected) {
     let currentMonthDay = 1
-    for (let i = 1; i <= getDaysInMonth(currentDaySelected); i++) {
-        let currTempDate = document.querySelector(`#pos-${dateIdNumber}`)
+    
 
+    for (let i = 1; i <= getDaysInMonth(currentDaySelected); i++) {
+        // the above loop continues to "length of month" EVEN PASS THE CURRENT HTML ELEMENTS
+
+        // possible solve -> run function that calculates the minimum number of necessary slots, and choose to add HTML if necessary BEFORE you do this step, downside: more functions = more clutter, upside, insures everything runs in correct order
+
+
+        // other possible solve -> do this logic, but branch off into new lgic depending on whether you need to add HTML or not, 
+        //      downside: complicated logic, harder to debug if everything is happening in one function, 
+        //      downside: if one thing breaks, everything breaks; AND you CAN'T understand one piece WITHOUT understanding the context too bec it's all together
+        // 
+        //      upside: everything is happening in one function = everything happening in one place = easier to read context since it's all together 
+        let currTempDate = document.querySelector(`#pos-${dateIdNumber}`)
+        
+        console.log("MonthDay: ", currentMonthDay)
         currTempDate.innerText = currentMonthDay
         currentMonthDay++
         dateIdNumber++
+        
     }
+    if (currentMonthDay < getDaysInMonth(currentDaySelected)) {
+        console.log("true")
+    //     for (let i = 0; i <= 6; i++) {
+    //     // calendarGrid.appendChild('button')
+    //     let tempExtraButton = document.createElement('button')
+    //     tempExtraButton.id = `pos-${dateIdNumber}`
+    //     calendarGrid.appendChild(tempExtraButton)
+
+    //     let button = document.createElement('button')
+    //     calendarGrid.appendChild(button)
+    // }
+
+    }
+
+        //     <button id = "pos-29" class = "date row-5 col-1 "></button>
+        // <button id = "pos-30" class = "date row-5 col-2"></button>
+        // <button id = "pos-31" class = "date row-5 col-3"></button>
+        // <button id = "pos-32" class = "date row-5 col-4"></button>
+        // <button id = "pos-33" class = "date row-5 col-5"></button>
+        // <button id = "pos-34" class = "date row-5 col-6"></button>
+        // <button id = "pos-35" class = "date row-5 col-7"></button>
 } 
 
 function fillNextMonthSection() {
+    // console.log(firstDayWeekday)
     // let numOfPrevToShow = firstDayWeekday - 1
     // let numOfDatesFilled = numOfPrevToShow + currentMonthLength
 
@@ -109,6 +143,10 @@ function fillNextMonthSection() {
         dateIdNumber++
         newMonthDay++
     }
+}
+
+function dynamicallyGrowCalendar() {
+
 }
 
 function changeDate(date, daysToAdd, monthsToAdd, yearsToAdd) {
@@ -134,3 +172,7 @@ function emptyCalendarHTML() {
         dateIdNumber++
     }
 } 
+
+function removeStylingFromDates() {
+
+}
