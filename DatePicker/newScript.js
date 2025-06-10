@@ -24,6 +24,8 @@ let firstOfMonth = new Date(currentYear, currentMonth, 1) ///// not updating
         let prevMonthLength = getDaysInMonth(addMonths(currentDaySelected, -1)) 
         let currentMonthLength = getDaysInMonth(currentDaySelected)
 
+    //   format(new Date(getYear(currentDaySelected), getMonth(currentDaySelected), 1), "e")
+
 toggleButton.innerText = format(currentDaySelected, "MMMM do, yyyy")
 monthAndYearHeader.innerText = format(currentDaySelected, "MMMM yyyy")
 populateWholeCalendar()
@@ -47,54 +49,63 @@ function changeMonth(value) {
     currentDaySelected = changeDate(currentDaySelected, 0, value, 0)
     toggleButton.innerText = format(currentDaySelected, "MMMM do, yyyy")
     monthAndYearHeader.innerText = format(currentDaySelected, "MMMM yyyy")
-    dateIdNumber = 1
     populateWholeCalendar()
 }
 
-/// setting initial dates
-function populateWholeCalendar() {
+function resetCalendar() {
+    emptyCalendarHTML()
     dateIdNumber = 1
-    populateCalendarPrevMonthSection()
-    populateCalendarCurrentMonthSection(currentDaySelected)
-    populateCalendarNextMonthSection()
+
+    firstDayWeekday = format(new Date(getYear(currentDaySelected), getMonth(currentDaySelected), 1), "e")
 }
 
-function populateCalendarPrevMonthSection(r) {
+
+function populateWholeCalendar() {
+    resetCalendar()
+
+    fillPrevMonthSection()
+    fillCurrentMonthSection(currentDaySelected)
+    fillNextMonthSection()
+}
+
+function fillPrevMonthSection() {
     if (firstDayWeekday == "1") {
         return
-    } else {
+    } else if (firstDayWeekday != "1") {
         let numOfPrevToShow = firstDayWeekday - 1
         let currDayOfPrevMonth = prevMonthLength - numOfPrevToShow
         
         for (let i = 1; i <= numOfPrevToShow; i++) {
-            let tempDate = document.querySelector(`#pos-${dateIdNumber}`)
-            tempDate.innerText = currDayOfPrevMonth
+            let prevTempDate = document.querySelector(`#pos-${dateIdNumber}`)
+            prevTempDate.innerText = currDayOfPrevMonth
             dateIdNumber++
             currDayOfPrevMonth++
-    }
+        }
     }
 } 
 
-function populateCalendarCurrentMonthSection(currentDaySelected) {
+function fillCurrentMonthSection(currentDaySelected) {
     let currentMonthDay = 1
     for (let i = 1; i <= getDaysInMonth(currentDaySelected); i++) {
-        let tempDate = document.querySelector(`#pos-${dateIdNumber}`)
-        tempDate.innerText = currentMonthDay
+        let currTempDate = document.querySelector(`#pos-${dateIdNumber}`)
+
+        currTempDate.innerText = currentMonthDay
         currentMonthDay++
         dateIdNumber++
     }
 } 
 
-function populateCalendarNextMonthSection() {
-    let numOfPrevToShow = firstDayWeekday - 1
-    let numOfDatesFilled = numOfPrevToShow + currentMonthLength
-    let daysLeft = 35 - numOfDatesFilled
+function fillNextMonthSection() {
+    // let numOfPrevToShow = firstDayWeekday - 1
+    // let numOfDatesFilled = numOfPrevToShow + currentMonthLength
 
+    let daysLeft = 35 - dateIdNumber
     let newMonthDay = 1
 
-    for (let i = 1; i <= daysLeft; i++) {
-        let tempDate = document.querySelector(`#pos-${dateIdNumber}`)
-        tempDate.innerText = newMonthDay
+    for (let i = dateIdNumber; i <= 35 ; i++) {
+        let nextTempDate = document.querySelector(`#pos-${dateIdNumber}`)
+
+        nextTempDate.innerText = newMonthDay
         dateIdNumber++
         newMonthDay++
     }
@@ -115,24 +126,11 @@ function changeDate(date, daysToAdd, monthsToAdd, yearsToAdd) {
     return returnedDate
 }
 
-
-//   <div class="date-picker-container">
-//     <button class="date-picker-button"></button>
-//     <div class="date-picker show">
-//       <div class="date-picker-header">
-//         <button class="prev-month-button month-button">&larr;</button>
-//         <div class="current-month"></div>
-//         <button class="next-month-button month-button">&rarr;</button>
-//       </div>
-//       <div class="date-picker-grid-header date-picker-grid">
-//         <div>Sun</div>
-//         <div>Mon</div>
-//         <div>Tue</div>
-//         <div>Wed</div>
-//         <div>Thu</div>
-//         <div>Fri</div>
-//         <div>Sat</div>
-//       </div>
-//       <div class="date-picker-grid-dates date-picker-grid">
-//         <button id = "1" class="date row-1 col-1 ">1x1</button>
-//         <button id = "2" class="date row-1 col-2">1x2</button>
+function emptyCalendarHTML() {
+    dateIdNumber = 1;
+        for (let i = 1; i <= 35; i++) {
+        let thisTempDate = document.querySelector(`#pos-${dateIdNumber}`)
+        thisTempDate.innerText = ""
+        dateIdNumber++
+    }
+} 
