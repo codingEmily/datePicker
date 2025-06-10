@@ -51,6 +51,8 @@ function changeMonth(value) {
 function populateWholeCalendar() {
     firstDayWeekday = resetCalendar()
 
+    dynamicallyGrowCalendar()
+
     fillPrevMonthSection()
     fillCurrentMonthSection(currentDaySelected)
     fillNextMonthSection()
@@ -85,18 +87,11 @@ function fillPrevMonthSection() {
 function fillCurrentMonthSection(currentDaySelected) {
     let currentMonthDay = 1
     
-
     for (let i = 1; i <= getDaysInMonth(currentDaySelected); i++) {
         // the above loop continues to "length of month" EVEN PASS THE CURRENT HTML ELEMENTS
 
-        // possible solve -> run function that calculates the minimum number of necessary slots, and choose to add HTML if necessary BEFORE you do this step, downside: more functions = more clutter, upside, insures everything runs in correct order
-
-
-        // other possible solve -> do this logic, but branch off into new lgic depending on whether you need to add HTML or not, 
-        //      downside: complicated logic, harder to debug if everything is happening in one function, 
-        //      downside: if one thing breaks, everything breaks; AND you CAN'T understand one piece WITHOUT understanding the context too bec it's all together
-        // 
-        //      upside: everything is happening in one function = everything happening in one place = easier to read context since it's all together 
+        // possible solve -> 
+                // run function that calculates the minimum number of necessary slots, and choose to add HTML if necessary BEFORE you do this step, downside: more functions = more clutter, upside, insures everything runs in correct order
         let currTempDate = document.querySelector(`#pos-${dateIdNumber}`)
         
         console.log("MonthDay: ", currentMonthDay)
@@ -146,7 +141,25 @@ function fillNextMonthSection() {
 }
 
 function dynamicallyGrowCalendar() {
+    // add ONE ROW of dates to the END, assign all the necessary ids/classes
+    //      calculate which dateIdNumber these should be at so they work same as the hardcoded dates >>>> JUST START AT 36 DUH!!! 
 
+    // do NOT add inner Text, this is happen in regular fillCalendar functions
+    // these WILL NEEED TO BE REMOVED in the reset function
+
+    let numOfPrevToShow = (Number(firstDayWeekday)) - 1
+    if (numOfPrevToShow + getDaysInMonth(currentDaySelected) > 35) {
+        for (let i = 0; i <= 6; i++) {
+            extraDateNumber = 1
+
+            let tempExtraButton = document.createElement('button')
+            tempExtraButton.id = `pos-${dateIdNumber + extraDateNumber}`
+            // tempExtraButton.innerText = dateIdNumber
+            calendarGrid.appendChild(tempExtraButton)
+
+            extraDateNumber++
+        }
+    }
 }
 
 function changeDate(date, daysToAdd, monthsToAdd, yearsToAdd) {
