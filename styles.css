@@ -1,4 +1,5 @@
 body {
+  background-color: rgb(44, 65, 69);
   margin: 0;
   margin-top: 1rem;
   display: flex;
@@ -9,6 +10,12 @@ body {
   display: none;
 }
 
+.current-month {
+  font-family: 'Times New Roman', Times, serif;
+  font-weight: 400;
+  font-size: larger;
+}
+
 .date-picker-container {
   position: relative;
   display: inline-block;
@@ -16,25 +23,39 @@ body {
 
 .date-picker-button {
   cursor: pointer;
-  border: 1px solid black;
+  background-color: white;
+  border-radius: .5rem;
+  padding: .5rem .8rem;
+  margin-top: 2rem;
+  border: none;
+  box-shadow: -2px 2.5px 6px 1px rgb(26, 42, 45);
+
+  font-family: 'Times New Roman', Times, serif;
+  font-weight: 400;
+  font-size: large;
+}
+
+.date-picker-button:hover {
+  background-color: hsl(200, 25%, 90%);
 }
 
 .date-picker {
   display: none;
   position: absolute;
   margin-top: 1rem;
-  top: 100%;
+  top: 100%; 
   transform: translateX(-50%);
   left: 50%;
-  padding: .5rem;
+  padding: 1rem;
   border-radius: .5rem;
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05), 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06), 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  box-shadow: -3px 4px 12px 3px rgb(26, 42, 45);
   background-color: white;
-  border: 1px solid black;
+  /* border: 1px solid black; */
 }
 
 .date-picker-header {
   display: flex;
+  font-family: inherit;
   justify-content: space-between;
   font-weight: bold;
   font-size: .8rem;
@@ -46,6 +67,7 @@ body {
   gap: .5rem;
   grid-template-columns: repeat(7, 2rem);
   grid-auto-rows: 2rem;
+
 }
 
 .date-picker-grid > * {
@@ -54,6 +76,9 @@ body {
   align-items: center;
   width: 100%;
   height: 100%;
+  color: black;
+
+  font-family: 'Times New Roman', Times, serif;
 }
 
 .date-picker-grid-header {
@@ -64,7 +89,7 @@ body {
 
 .date-picker-grid-dates {
   color: #555;
-  border: 1px solid black;
+  /* border: 1px solid black; */
 }
 
 .date-picker-other-month-date {
@@ -76,14 +101,16 @@ body {
   border-radius: .25rem;
   border: none;
   background: none;
-  border: 1px solid black;
-
+  /* border: 1px solid black; */
 }
 
 .date-picker-grid-dates > *:hover {
-  background-color: hsl(200, 100%, 80%);
+  background-color: hsl(200, 50%, 95%);
+  border: 1px solid hsl(200, 50%, 60%); 
   color: black;
 }
+
+
 
 .month-button {
   background: none;
@@ -94,4 +121,11 @@ body {
 .month-button:hover {
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
   border-radius: .5rem;
+}
+
+.selectedDate.date{
+  border: 1px solid hsl(200, 100%, 30%);
+  background-color: hsl(200, 50%, 90%);
+
+  color: black;
 }

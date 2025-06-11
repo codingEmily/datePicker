@@ -8,13 +8,8 @@ const toggleButton = document.querySelector('.date-picker-button')
 const monthAndYearHeader = document.querySelector('.current-month')
 const prevButton = document.querySelector('.prev-month-button')
 const nextButton = document.querySelector('.next-month-button')
-// const calendarGrid = document.querySelector('.date-picker-grid-dates')
-
-let dateIdNumber = 1; ///////////////////////////////// 
-
-toggleButton.addEventListener("click", () => {
-    wholeModule.classList.toggle('show')
-})
+const nodeListOfDates = document.querySelectorAll('.date')
+let arrayOfDates = Array.from(nodeListOfDates)
 
 let currentMonth = getMonth(currentDaySelected) ///// limited scope
 let currentYear = getYear(currentDaySelected) ///// limited scope
@@ -22,6 +17,11 @@ let firstOfMonth = new Date(currentYear, currentMonth, 1) ///// limited scope
         let firstDayWeekday = format(firstOfMonth, "e") /////// limited scope
         let prevMonthLength = getDaysInMonth(addMonths(currentDaySelected, -1)) 
         let currentMonthLength = getDaysInMonth(currentDaySelected)
+let dateIdNumber = 1; ///////////////////////////////// 
+
+toggleButton.addEventListener("click", () => {
+    wholeModule.classList.toggle('show')
+})
 
 toggleButton.innerText = format(currentDaySelected, "MMMM do, yyyy")
 monthAndYearHeader.innerText = format(currentDaySelected, "MMMM yyyy")
@@ -34,10 +34,93 @@ nextButton.addEventListener("click", () => {
     changeMonth(1)
 })
 
+document.addEventListener("click", e => {
+    if (e.target.matches('.date')) {
+        document.querySelectorAll(`.date.selectedDate`).forEach(el => {
+            el.classList.remove('selectedDate');
+        })
+        e.target.classList.add('selectedDate');
+
+        let dataArray = parseMonthAndYear()
+        let month = dataArray[0]
+        let year = Number(dataArray[1])
+        let day = Number(e.target.innerText)
+
+        if (e.target.classList.contains('prevDay')) {
+        currentDaySelected = new Date(year, month - 1, day);
+        console.log(e.target)
+
+        } else if (e.target.classList.contains('nextDay')) {
+        currentDaySelected = new Date(year, month + 1, day);
+        console.log(e.target)
+
+        } else {
+        currentDaySelected = new Date(year, month, day);
+        console.log(e.target)
+
+        }
+        toggleButton.innerText = format(currentDaySelected, "MMMM do, yyyy")
+    }
+})
+function parseMonthAndYear() {
+    let monthAndYearFullString = monthAndYearHeader.innerText
+    let monthAndYearAsArrayOfStrings =  monthAndYearFullString.split(" ")
+    let monthNumber
+    let dataArray = []
+
+       switch (monthAndYearAsArrayOfStrings[0]) {
+        case "January":
+            monthNumber = 0
+            break;
+        case "February":
+            monthNumber = 1
+            break;
+        case "March":
+            monthNumber = 2
+            break;
+        case "April":
+            monthNumber = 3
+            break;
+        case "May":
+            monthNumber = 4
+            break;
+        case "June":
+            monthNumber = 5
+            break;
+        case "July":
+            monthNumber = 6
+            break;
+        case "August":
+            monthNumber = 7
+            break;
+        case "September":
+            monthNumber = 8
+            break;
+        case "October":
+            monthNumber = 9
+            break;
+        case "November":
+            monthNumber = 10
+            break;
+            
+        case "December":
+            monthNumber = 11
+            break;
+        }
+        
+        dataArray.push(monthNumber, monthAndYearAsArrayOfStrings[1])
+    return dataArray
+}
+
 function changeMonth(value) {
+    document.querySelectorAll(`.date`).forEach(el => {
+        el.classList.remove('selectedDate')
+        el.classList.remove('prevDay')
+        el.classList.remove('nextDay')
+    })
+
     currentDaySelected = changeDate(currentDaySelected, 0, value, 0)
-    toggleButton.innerText = format(currentDaySelected, "MMMM do, yyyy")
-    monthAndYearHeader.innerText = format(currentDaySelected, "MMMM yyyy")
+    // monthAndYearHeader.innerText = format(currentDaySelected, "MMMM yyyy")
     populateWholeCalendar()
 }
 
@@ -68,6 +151,7 @@ function fillPrevMonthSection() {
         for (let i = 1; i <= numOfPrevToShow; i++) {
             let prevTempDate = document.querySelector(`#pos-${dateIdNumber}`)
             prevTempDate.style = "color: gray"
+            prevTempDate.classList.add('prevDay')
             prevTempDate.innerText = currDayOfPrevMonth
             dateIdNumber++
             currDayOfPrevMonth++
@@ -98,6 +182,7 @@ function fillNextMonthSection() {
     for (let i = dateIdNumber; i <= 42 ; i++) {
         let nextTempDate = document.querySelector(`#pos-${dateIdNumber}`)
         nextTempDate.style = "color: gray"
+        nextTempDate.classList.add('nextDay')
 
         nextTempDate.innerText = newMonthDay
         dateIdNumber++
