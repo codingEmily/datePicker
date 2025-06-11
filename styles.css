@@ -5,6 +5,10 @@ body {
   justify-content: center;
 }
 
+.hiddenDates {
+  display: none;
+}
+
 .date-picker-container {
   position: relative;
   display: inline-block;
