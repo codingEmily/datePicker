@@ -5,14 +5,6 @@ body {
   justify-content: center;
 }
 
-.hiddenDates .date-picker-grid > *  {
-  display:none;
-  height: 0px;
-  width: 0px;
-  padding: none;
-  color: red;
-  background-color: red;
-}
 .date-picker-container {
   position: relative;
   display: inline-block;
