@@ -5,6 +5,14 @@ body {
   justify-content: center;
 }
 
+.hiddenDates .date-picker-grid > *  {
+  display:none;
+  height: 0px;
+  width: 0px;
+  padding: none;
+  color: red;
+  background-color: red;
+}
 .date-picker-container {
   position: relative;
   display: inline-block;
@@ -13,7 +21,6 @@ body {
 .date-picker-button {
   cursor: pointer;
   border: 1px solid black;
-
 }
 
 .date-picker {
@@ -62,7 +69,6 @@ body {
 .date-picker-grid-dates {
   color: #555;
   border: 1px solid black;
-
 }
 
 .date-picker-other-month-date {
