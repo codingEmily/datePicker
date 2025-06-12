@@ -32,10 +32,18 @@ prevButton.addEventListener("click", () => {
 })
 nextButton.addEventListener("click", () => {
     changeMonth(1)
-})
+})  /// THESE BUTTONS NO LONGER WORK. They iterate based on the CURRENT SELECTED MONTH DATE rather than the "currently viewed month" meaning if I'm looking at september, and I select an august date from the grayed out area, when I click the prevButton, the calendar skips August and goes to July
+// CHOICE -> 1. Make it so you iterate thru months based on "month listed in header, converted to Number()" 
+// ->  2. Make it so that grayed out dates (prevMonth and nextMonth) are not selectable
+// ->  3. Make it so that as soon as you click a grayed out date, the calendar jumps to that date's month 
 
 document.addEventListener("click", e => {
-    if (e.target.matches('.date')) {
+    if (
+        e.target.matches('.date') 
+        && !e.target.matches('.prevDay')
+        && !e.target.matches('.nextDay')
+) 
+{
         document.querySelectorAll(`.date.selectedDate`).forEach(el => {
             el.classList.remove('selectedDate');
         })
@@ -48,11 +56,11 @@ document.addEventListener("click", e => {
 
         if (e.target.classList.contains('prevDay')) {
         currentDaySelected = new Date(year, month - 1, day);
-        console.log(e.target)
+        console.log(e.target) //// completely unnecessary WHILE the prevDay & nextDay dates are un-selectable, BUT I might change that feature soon
 
         } else if (e.target.classList.contains('nextDay')) {
         currentDaySelected = new Date(year, month + 1, day);
-        console.log(e.target)
+        console.log(e.target)  //// completely unnecessary WHILE the prevDay & nextDay dates are un-selectable, BUT I might change that feature soon
 
         } else {
         currentDaySelected = new Date(year, month, day);
@@ -102,7 +110,6 @@ function parseMonthAndYear() {
         case "November":
             monthNumber = 10
             break;
-            
         case "December":
             monthNumber = 11
             break;
@@ -119,8 +126,8 @@ function changeMonth(value) {
         el.classList.remove('nextDay')
     })
 
-    currentDaySelected = changeDate(currentDaySelected, 0, value, 0)
-    // monthAndYearHeader.innerText = format(currentDaySelected, "MMMM yyyy")
+    currentDaySelected = changeDate(currentDaySelected, 0, value, 0) ///
+    monthAndYearHeader.innerText = format(currentDaySelected, "MMMM yyyy")
     populateWholeCalendar()
 }
 
@@ -132,8 +139,8 @@ function populateWholeCalendar() {
 }
 
 function resetCalendar() {
-    removeStylingFromDates()
     toggleExtraDates("none")
+    removeStylingFromDates()
     emptyCalendarHTML()
     
     dateIdNumber = 1
@@ -172,19 +179,28 @@ function fillCurrentMonthSection(currentDaySelected) {
         
     }
     if (numOfPrevToShow + getDaysInMonth(currentDaySelected) > 35) {
+        console.log(getDaysInMonth(currentDaySelected))
+        console.log("yes")
         toggleExtraDates("block")
+    } 
+    else if (numOfPrevToShow + getDaysInMonth(currentDaySelected) <= 35) {
+        console.log("no")
+        toggleExtraDates("none")
+
     }
 } 
 
 function fillNextMonthSection() {
     let newMonthDay = 1
 
-    for (let i = dateIdNumber; i <= 42 ; i++) {
+    for (let i = dateIdNumber; i <= 42 ; i++) {   
         let nextTempDate = document.querySelector(`#pos-${dateIdNumber}`)
         nextTempDate.style = "color: gray"
         nextTempDate.classList.add('nextDay')
+        
 
         nextTempDate.innerText = newMonthDay
+        console.log(nextTempDate.innerText)
         dateIdNumber++
         newMonthDay++
     }
@@ -215,10 +231,11 @@ function emptyCalendarHTML() {
 } 
 
 function toggleExtraDates(noneOrBlock) {
-    let allExtraDatesAsNodeList = document.querySelectorAll('.hiddenDates');
+    let allExtraDatesAsNodeList = document.querySelectorAll('.date.hiddenDates');
     let arrayOfExtraDates = Array.from(allExtraDatesAsNodeList)
     
     for (let i = 0; i < arrayOfExtraDates.length; i++) {
+        // console.log(arrayOfExtraDates[i])
     arrayOfExtraDates[i].style = `display: ${noneOrBlock}`
 }    
 }
@@ -231,3 +248,4 @@ function removeStylingFromDates() {
         dateIdNumber++
     }
 }
+

@@ -6,7 +6,7 @@ body {
   justify-content: center;
 }
 
-.hiddenDates {
+.date.hiddenDates {
   display: none;
 }
 
@@ -40,7 +40,7 @@ body {
 }
 
 .date-picker {
-  display: none;
+  /* display: none; */
   position: absolute;
   margin-top: 1rem;
   top: 100%; 
@@ -50,7 +50,7 @@ body {
   border-radius: .5rem;
   box-shadow: -3px 4px 12px 3px rgb(26, 42, 45);
   background-color: white;
-  /* border: 1px solid black; */
+  /* border: 1px solid rgb(255, 0, 0); */
 }
 
 .date-picker-header {
